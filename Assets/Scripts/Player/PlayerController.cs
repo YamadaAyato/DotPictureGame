@@ -1,12 +1,12 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using System.Collections;
 
-//RigidBody2D‚ğ—v‹
+//RigidBody2Dã‚’è¦æ±‚
 [RequireComponent(typeof(Rigidbody2D))]
 
-public class PlayerGridMover : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float _moveSpeed = 3f;  // ˆÚ“®‘¬“x
+    [SerializeField] private float _moveSpeed = 3f;  // ç§»å‹•é€Ÿåº¦
 
     private bool _isMoving = false;
     private Rigidbody2D _rb;
@@ -22,16 +22,27 @@ public class PlayerGridMover : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒvƒŒƒCƒ„[‚ÌˆÚ“®
+    /// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç§»å‹•
     /// </summary>
     private void Move()
     {
-        //ˆÚ“®‚µ‚Ä‚¢‚È‚¢‚Æ‚«‚ÉÀs
+        ////ã‚­ãƒ¼å…¥åŠ›ã®å–å¾—
+        //float horizontal = Input.GetAxisRaw("Horizontal");
+        //float vartical = Input.GetAxisRaw("Vertical");
+
+        ////ç§»å‹•æ–¹å‘
+        //Vector3 move = new Vector3(horizontal, vartical, 0).normalized;
+
+        ////å®Ÿéš›ã®ç§»å‹•
+        //_playerRb.velocity = move * _moveSpeed;
+
+
+        //ç§»å‹•ã—ã¦ã„ãªã„ã¨ãã«å®Ÿè¡Œ
         if (!_isMoving)
         {
             Vector3 input = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0);
 
-            //c‰¡‚Ç‚¿‚ç‚©‚ÌˆÚ“®‚ğ—Dæ‚µ‚ÄÎ‚ßˆÚ“®‚ğ‹Ö~
+            //ç¸¦æ¨ªã©ã¡ã‚‰ã‹ã®ç§»å‹•ã‚’å„ªå…ˆã—ã¦æ–œã‚ç§»å‹•ã‚’ç¦æ­¢
             if (input.x != 0)
             {
                 input.y = 0;
@@ -39,7 +50,7 @@ public class PlayerGridMover : MonoBehaviour
 
             if (input != Vector3.zero)
             {
-                //¡‚ÌˆÊ’u‚Æ“ü—Í‚ğ‘«‚µ‚ÄˆÚ“®æ‚ğŒvZ
+                //ä»Šã®ä½ç½®ã¨å…¥åŠ›ã‚’è¶³ã—ã¦ç§»å‹•å…ˆã‚’è¨ˆç®—
                 Vector3 targetPosition = transform.position + input.normalized;
                 StartCoroutine(MoveToGrid(targetPosition));
             }
@@ -52,16 +63,16 @@ public class PlayerGridMover : MonoBehaviour
 
         _isMoving = true;
 
-        //©•ª‚ÌˆÊ’u‚ª–Ú“I‚ÌˆÊ’u‚É‚Â‚¢‚Ä‚¢‚È‚¢ŠÔŒJ‚è•Ô‚·
+        //è‡ªåˆ†ã®ä½ç½®ãŒç›®çš„ã®ä½ç½®ã«ã¤ã„ã¦ã„ãªã„é–“ç¹°ã‚Šè¿”ã™
         while (transform.position != target)
         {
-            //–Ú“I‚ÌˆÊ’u‚Ü‚Å_moveSpeed * Time.deltaTime‚ÅˆÚ“®
+            //ç›®çš„ã®ä½ç½®ã¾ã§_moveSpeed * Time.deltaTimeã§ç§»å‹•
             transform.position = Vector3.MoveTowards(transform.position, target, _moveSpeed * Time.deltaTime);
-            //–ˆƒtƒŒ[ƒ€Às
+            //æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å®Ÿè¡Œ
             yield return null;
         }
 
-        // ƒYƒŒ•â³
+        // ã‚ºãƒ¬è£œæ­£
         transform.position = target; 
         _isMoving = false;
     }
